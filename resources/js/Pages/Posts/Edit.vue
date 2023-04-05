@@ -3,9 +3,9 @@
     <div>
         <div class="card border-0 rounded shadow">
             <div class="card-body">
-                <h4>TAMBAH POST</h4>
+                <h4>EDIT POST</h4>
                 <hr>
-                <form @submit.prevent="storePost">
+                <form @submit.prevent="updatePost">
                     <div class="mb-3">
                         <label class="form-label">TITLE POST</label>
                         <input type="text" class="form-control" v-model="post.title" placeholder="Masukkan Title Post">
@@ -16,12 +16,12 @@
                     <div class="mb-3">
                         <label class="form-label">CONTENT</label>
                         <textarea class="form-control" rows="5" v-model="post.word" placeholder="Masukkan Content Post"></textarea>
-<!--                        <div v-if="errors.word" class="mt-2 alert alert-danger">-->
-<!--                            {{ errors.word }}-->
-<!--                        </div>-->
+                        <div v-if="errors.word" class="mt-2 alert alert-danger">
+                            {{ errors.word }}
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <button type="submit" class="btn btn-primary btn-md shadow-sm me-2">SIMPAN</button>
+                        <button type="submit" class="btn btn-primary btn-md shadow-sm me-2">UPDATE</button>
                         <button type="reset" class="btn btn-warning btn-md shadow-sm">RESET</button>
                     </div>
                 </form>
@@ -45,27 +45,28 @@ export default {
 
     //props
     props: {
+        post: Object,
         errors: Object
     },
 
     //define Composition Api
-    setup() {
+    setup(props) {
 
         //state posts
         const post = reactive({
-            title: '',
-            word: ''
+            title: props.post.title,
+            content: props.post.content
         })
 
-        //function storePost
-        function storePost() {
+        //function updatePost
+        function updatePost() {
 
             //define variable
             let title   = post.title
             let word = post.word
 
             //send data
-            Inertia.post('/posts/', {
+            Inertia.put(`/posts/${props.post.id}`, {
                 title: title,
                 word: word
             })
@@ -74,7 +75,7 @@ export default {
 
         return {
             post,
-            storePost
+            updatePost
         }
 
     }

@@ -13,30 +13,70 @@ class PostController extends Controller
     {
         $posts = Post::latest()->get();
         return Inertia::render('Posts/Index',
-        [
-            'posts' => $posts
-        ]);
+            [
+                'posts' => $posts
+            ]);
     }
-    public function create(){
+
+    public function create()
+    {
         return Inertia::render('Posts/Create');
 
     }
-    public function store(Request $request){
+
+    public function store(Request $request)
+    {
         //set validation
         $request->validate([
-            'title'   => 'required',
-            'content' => 'required',
+            'title' => 'required',
+            'word' => 'required',
         ]);
 
         //create post
         $post = Post::create([
-            'title'     => $request->title,
-            'content'   => $request->content
+            'title' => $request->title,
+            'content' => $request->word
         ]);
 
-        if($post) {
+        if ($post) {
             return Redirect::route('posts.index')->with('message', 'Data Berhasil Disimpan!');
         }
     }
+
+    public function edit(Post $post)
+    {
+        return Inertia::render('Posts/Edit',
+            ['post' => $post]
+        );
+    }
+
+    public function update(Request $request, Post $post)
+    {
+        //set validation
+        $request->validate([
+            'title'   => 'required',
+            'word' => 'required',
+        ]);
+
+        //update post
+        $post->update([
+            'title'     => $request->title,
+            'content'   => $request->word
+        ]);
+
+        if($post) {
+            return Redirect::route('posts.index')->with('message', 'Data Berhasil Diupdate!');
+        }
+    }
+    public function destroy($id){
+        $post = Post::findOrfail($id);
+        $post->delete();
+        if ($post){
+            return Redirect::route('posts.index')->with('message', 'Data Berhasil Dihapus!');
+
+        }
+    }
+
+
     //
 }

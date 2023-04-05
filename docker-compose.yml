@@ -1,0 +1,14 @@
+# version: '1.0'
+services:
+    app:
+        build:
+            context: .
+            dockerfile: .docker/php/Dockerfile
+        image: laravel-inertia
+        container_name: laravel-inertia
+        restart: always
+        ports:
+            - 44510:80
+            - 44511:443
+        volumes:
+            - .:/var/www/html

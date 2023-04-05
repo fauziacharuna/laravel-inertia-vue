@@ -1,7 +1,9 @@
 require('./bootstrap');
 
-import { createApp, h } from 'vue'
-import { App, plugin } from '@inertiajs/inertia-vue3'
+import {createApp, h} from 'vue'
+import {App, plugin} from '@inertiajs/inertia-vue3'
+import { createInertiaApp, Link } from '@inertiajs/inertia-vue3';
+
 
 const el = document.getElementById('app')
 
@@ -11,3 +13,4 @@ createApp({
         resolveComponent: name => require(`./Pages/${name}`).default,
     })
 }).use(plugin).mount(el)
+
